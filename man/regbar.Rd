@@ -4,8 +4,8 @@
 \alias{regbar}
 \title{Barplot with explicit data comparison}
 \usage{
-regbar(data, x, y, comp, num, ascending = TRUE, title, ylab, col1, col2,
-  flip = TRUE, ...)
+regbar(data, x, y, comp, num, aim = NULL, split = NULL, ascending = TRUE,
+  title, ylab, col1, col2, col3, flip = TRUE, ...)
 }
 \arguments{
 \item{data}{Data set}
@@ -19,6 +19,10 @@ eg. National compared to the different districts}
 
 \item{num}{Include denominator i.e N in the figure eg. Tawau HF (N=2088)}
 
+\item{aim}{A line on y-axis indicating aim}
+
+\item{split}{Where to split inside and outside text eg. 10\% of max as split=0.1}
+
 \item{ascending}{Sort data ascending order}
 
 \item{title}{Title for the plot}
@@ -28,6 +32,8 @@ eg. National compared to the different districts}
 \item{col1}{Color for bars}
 
 \item{col2}{Color for the 'diff' bar}
+
+\item{col3}{Color for aim line}
 
 \item{flip}{Flip plot horizontally}
 
@@ -46,5 +52,8 @@ library("rreg")
 regbar(data = hfdata, x = inst, y = case2)
 regbar(hfdata, inst, case2, comp = "Tawau HF")
 regbar(hfdata, inst, 2007, comp = "Taw", num = extt)
+
+# split text visualisatio at 5\% of max value
+regbar(hfdata, inst, 2007, comp = "Taw", split = 0.05)
 
 }

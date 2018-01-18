@@ -1,8 +1,8 @@
-ca15d0adc1fa1eb6781a49eb92c0ea4f *DESCRIPTION
+7944fbe56b5d3fb324c590a2d2ed2d2a *DESCRIPTION
 2baa092ce9d30c8ced50a7800d614b62 *LICENSE
 602e2e7a3bbbfe7ee405e9bd942fa1a0 *NAMESPACE
 6492bc6704e28209d001bab41c6e0571 *R/data.R
-0adf18ef92d3b8a684ae3e90b8685fe7 *R/regbar.R
+775de8624353fbf260dc71ec5f3d9017 *R/regbar.R
 ba1f1fe6d9f3dc2d8edbd43a698cea26 *R/regerr.R
 86393a9affb7a22fe8034b23dd78c8c8 *R/regline.R
 26cc770c4f3cb226004633d43c52fab0 *R/regrad.R
@@ -11,7 +11,7 @@ ba1f1fe6d9f3dc2d8edbd43a698cea26 *R/regerr.R
 70f0bdab40c77f5cff2234f5e2957629 *data/hfdata.rda
 0e17ac0b7535677f7cca052ed5cdf622 *data/yrdata.rda
 c92bdd3d042c76bb7b7020c1bfccd834 *man/hfdata.Rd
-9218f413d7c1ecb32187209cde8f5a49 *man/regbar.Rd
+d7c4e93dceceabb9e83bec764ea1cc6b *man/regbar.Rd
 6a91bfbaa4d01a219d4f6e2ff4ebecca *man/regerr.Rd
 c656505839df2860ffae327274264592 *man/regline.Rd
 aee69bb7c14ddef0a637dfc66b39d7ce *man/regrad.Rd
@@ -19,4 +19,4 @@ aee69bb7c14ddef0a637dfc66b39d7ce *man/regrad.Rd
 988f7675ad7257f7672e7fdd825d8dfe *man/yrdata.Rd
 3348e3d09b57c70ff195001f9e33566c *tests/testthat.R
 d989e9c3136c766d8c9dc6b76788fef6 *tests/testthat/test_regbar_data.R
-e89f03926dc6fd78e6588ceaf64dd674 *tests/testthat/test_regbar_pos.R
+9defedea73349f31e88cc65ad0d18039 *tests/testthat/test_regbar_pos.R

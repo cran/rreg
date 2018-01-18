@@ -12,11 +12,14 @@
 ##' @param comp Compare a specific bar from the rest for a vivid comparison
 ##'   eg. National compared to the different districts
 ##' @param num Include denominator i.e N in the figure eg. Tawau HF (N=2088)
+##' @param aim A line on y-axis indicating aim
+##' @param split Where to split inside and outside text eg. 10\% of max as split=0.1
 ##' @param ascending Sort data ascending order
 ##' @param title Title for the plot
 ##' @param ylab Label for y-axis
 ##' @param col1 Color for bars
 ##' @param col2 Color for the 'diff' bar
+##' @param col3 Color for aim line
 ##' @param flip Flip plot horizontally
 ##' @param ... Additional arguments
 ##'
@@ -29,13 +32,17 @@
 ##' regbar(hfdata, inst, case2, comp = "Tawau HF")
 ##' regbar(hfdata, inst, 2007, comp = "Taw", num = extt)
 ##'
+##' # split text visualisatio at 5% of max value
+##' regbar(hfdata, inst, 2007, comp = "Taw", split = 0.05)
+##'
 ##' @export
 
 regbar <- function(data, x, y,
-                   comp, num,
+                   comp, num, aim = NULL,
+                   split = NULL,
                    ascending = TRUE,
                    title, ylab,
-                   col1, col2,
+                   col1, col2, col3,
                    flip = TRUE,
                    ...) {
 
@@ -104,19 +111,28 @@ regbar <- function(data, x, y,
 
   if(missing(col2)){
     col2 <- "#6baed6"
-    col3 <- c(col1, col2)
+    colmix <- c(col1, col2)
   } else {
-    col3 <- c(col1, col2)
+    colmix <- c(col1, col2)
   }
 
+  ## 10% of max value cutoff text placement outside bar
+  if (is.null(split)) {
+    ysplit <- with(data, 0.1 * max(yvar))
+  } else {
+    ysplit = with(data, split * max(yvar))
+  }
 
-  ## Value placement inside or outside bar
-  ysplit <- with(data, 0.1 * max(yvar))
   data$ypos <- ifelse(data$yvar > ysplit, 1, 0)
 
-  ## positioning of text i.e ouside bar when 10% of max value.
-  ymax <- 0.03 * max(data$yvar)
-  data$txtpos <- ifelse(data$ypos == 0, data$yvar + ymax, data$yvar - ymax)
+  ## position and width specification
+  position = position_dodge(width = .80)
+  width = .80
+
+
+  ## ## positioning of text i.e ouside bar when 10% of max value.
+  ## ymax <- 0.03 * max(data$yvar)
+  ## data$txtpos <- ifelse(data$ypos == 0, data$yvar + ymax, data$yvar - ymax)
 
   ## Ascending order of .xname according to yvar
   if (ascending) {
@@ -126,19 +142,37 @@ regbar <- function(data, x, y,
   ## Base plot
   p <- ggplot(data, aes(.xname, yvar))
 
-  ## Compare bar
-  if (missing(comp)) {
-    p <- p + geom_bar(stat = 'identity', fill = col1)
+  ## Aim line color
+  if (missing(col3)) {
+    col3 = "blue"
   } else {
-    comp <- grep(comp, data$.xname, value = TRUE)
-    p <- p + geom_bar(stat = 'identity', aes(fill = .xname == comp))
+    col3 = col3
   }
 
-  ## Plot
+  ## Aim line
+  if (!is.null(aim)) {
+    p <- p +
+      geom_hline(yintercept = aim, color = col3, size = 1, linetype = "dashed")
+  }
+
+  ## Compare bar
+  if (missing(comp)) {
+    p <- p + geom_bar(width = width, stat = 'identity', fill = col1, position = position)
+  } else {
+    comp <- grep(comp, data$.xname, value = TRUE)
+    p <- p + geom_bar(width = width, stat = 'identity', aes(fill = .xname == comp), position = position)
+  }
+
+  ## Plot text placement accordingly
   p <- p +
-    geom_text(aes(y = txtpos, label = yvar), size = 3.5) +
+    geom_text(data = data[which(data$ypos == 1), ], aes(label = yvar), hjust = 1.5, position = position, size = 3.5) +
+    geom_text(data = data[which(data$ypos == 0), ], aes(label = yvar), hjust = -0.5, position = position, size = 3.5)
+
+
+  ## Plot everything
+  p <- p +
     labs(title = title, y = ylab, x = "") +
-    scale_fill_manual(values = col3, guide = 'none') +
+    scale_fill_manual(values = colmix, guide = 'none') +
     scale_y_continuous(expand = c(0, 0)) +
     ptheme
 
